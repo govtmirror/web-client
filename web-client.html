@@ -46,6 +46,7 @@ Example:
         <paper-button dialog-dismiss>Cancel</paper-button>
       </div>
     </paper-dialog>
+    <content select="dataadapter"></content>
     <paper-drawer-panel id="drawerPanel" responsive-width="1280px">
 
       <div class="nav" drawer>
@@ -158,6 +159,7 @@ Example:
             console.log("yo, do it " + e.detail.title);
             this.apptitle = e.detail.title;
           });
+          console.log("web-client, after add event listener");
           this.devicePageSelector();
         },
 
