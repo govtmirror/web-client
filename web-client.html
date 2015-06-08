@@ -56,10 +56,10 @@ Example:
         </paper-toolbar>
 
         <!-- Drawer Content -->
-        <paper-menu class="list" attr-for-selected="page-name" selected="{{menuSelection}}">
-          <paper-item page-name="home">Home</paper-item>
-          <paper-item page-name="list-detail">Cases</paper-item>
-          <paper-item page-name="list">Page2</paper-item>
+        <paper-menu class="list" attr-for-selected="pagename" selected="{{menuSelection}}">
+          <paper-item pagename="home">Home</paper-item>
+          <paper-item pagename="list-detail">Cases</paper-item>
+          <paper-item pagename="list">Page2</paper-item>
         </paper-menu>
       </div>
 
@@ -87,15 +87,12 @@ Example:
         <div class="content">
 
           <iron-pages 
-              attr-for-selected="data-route" 
+              attr-for-selected="pagename" 
               selected="{{contentPage}}"
               selected-item="{{selItem}}">
-            <seed-home data-route="home"></seed-home>
-            <seed-list-detail data-route="list-detail"></seed-list-detail>
-            <seed-list-detail data-route="m-list-detail"></seed-list-detail>
-            <seed-list-detail data-route="list"></seed-list-detail>
-            <seed-list-detail data-route="m-list"></seed-list-detail>
-            <m-seed-home data-route="m-home"></seed-home>
+            
+            <content select=".menupages"></content>
+
           </iron-pages>
 
         </div>

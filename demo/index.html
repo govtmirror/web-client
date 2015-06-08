@@ -13,12 +13,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>web-client Demo</title>
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="elements.html">
   </head>
   <body>
 
-    <web-client></web-client>
+    <web-client>
+
+      <seed-home class="menupages" pagename="home"></seed-home>
+      <m-seed-home class="menupages" pagename="m-home"></m-seed-home>
+      <seed-list-detail class="menupages" pagename="list-detail"></seed-list-detail>
+      <seed-list-detail class="menupages" pagename="m-list-detail"></seed-list-detail>
+      <seed-list-detail class="menupages" pagename="list"></seed-list-detail>
+      <seed-list-detail class="menupages" pagename="m-list"></seed-list-detail>
+
+    </web-client>
 
   </body>
 </html>
