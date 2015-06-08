@@ -72,7 +72,7 @@ Example:
           <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
 
           <!-- Application name -->
-          <div class="appname">Seed App 0.0.0 <span>{{isPhone}}</span></div>
+          <div class="appname">{{apptitle}}</div>
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
@@ -124,8 +124,12 @@ Example:
             observer: 'devicePageSelector'
           },
           contentPage: {
-            tyoe: String,
+            type: String,
             observer: 'swapContent'
+          },
+          apptitle: {
+            type: String,
+            value: "Application Title"
           },
           oldSelItem: Object,
           selItem: Object
@@ -150,7 +154,10 @@ Example:
         },
 
         ready: function () {
-          this.selItem = this.selItem || {},
+          this.addEventListener('setapptitle', function (e) {
+            console.log("yo, do it " + e.detail.title);
+            this.apptitle = e.detail.title;
+          });
           this.devicePageSelector();
         },
 
