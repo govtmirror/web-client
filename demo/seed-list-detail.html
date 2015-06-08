@@ -64,7 +64,7 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
 
           <!-- List Toolbar -->
           <paper-toolbar>
-            <h2>Cases</h2>
+            <h2>Cases <span>{{datasink}}</span></h2>
           </paper-toolbar>
 
           <!-- List -->
@@ -117,6 +117,10 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
     Polymer({
       is: 'seed-list-detail',
 
+      properties: {
+        datasink: Array
+      },
+
       _computeListWidth: function(isMobile) {
         // when in mobile screen size, make the list be 100% width to cover the whole screen
         return isMobile ? '100%' : '33%';
@@ -125,6 +129,8 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
       _listTap: function() {
         this.$.mainDrawerPanel.closeDrawer();
       },
+
+
 
       helpMe: function () {
         this.$.helpDialog.open();
