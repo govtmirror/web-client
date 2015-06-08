@@ -57,9 +57,9 @@ Example:
 
         <!-- Drawer Content -->
         <paper-menu class="list" attr-for-selected="pagename" selected="{{menuSelection}}">
-          <paper-item pagename="home">Home</paper-item>
-          <paper-item pagename="list-detail">Cases</paper-item>
-          <paper-item pagename="list">Page2</paper-item>
+          
+          <content select=".menuitems"></content>
+
         </paper-menu>
       </div>
 
@@ -120,12 +120,19 @@ Example:
           },
           menuSelection: {
             type: String,
-            value: "home",
+            // value: "home",
             observer: 'devicePageSelector'
-          }
+          },
+          contentPage: {
+            tyoe: String,
+            observer: 'swapContent'
+          },
+          oldSelItem: Object,
+          selItem: Object
         },
 
         devicePageSelector: function () {
+          console.log("in devicePageSelector");
           if (this.isPhone) {
             this.contentPage = "m-" + this.menuSelection;
           } else {
@@ -133,7 +140,17 @@ Example:
           }
         },
 
+        swapContent: function () {
+          if (this.oldSelItem == undefined) {
+            console.log("no oldSelItem");
+            this.oldSelItem = this.selItem;
+          }
+          this.oldSelItem.shutDown();
+          this.selItem.setUp();
+        },
+
         ready: function () {
+          this.selItem = this.selItem || {},
           this.devicePageSelector();
         },
 
