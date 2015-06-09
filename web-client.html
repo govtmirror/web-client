@@ -156,7 +156,7 @@ Example:
 
         ready: function () {
           this.addEventListener('setapptitle', function (e) {
-            console.log("yo, do it " + e.detail.title);
+            console.log("setting title to " + e.detail.title);
             this.apptitle = e.detail.title;
           });
           console.log("web-client, after add event listener");

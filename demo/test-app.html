@@ -10,19 +10,13 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
   <template>
     <web-client apptitle="This is a better title">
 
-      <data-adapter class="dataadapter"
-          datasource="{{ccc}}">
-      </data-adapter>
-
       <paper-item class="menuitems" pagename="home">Home</paper-item>
       <paper-item class="menuitems" pagename="list-detail">Cases</paper-item>
       <paper-item class="menuitems" pagename="list">Page2</paper-item>
 
       <seed-home class="menupages" pagename="home"></seed-home>
       <m-seed-home class="menupages" pagename="m-home"></m-seed-home>
-      <seed-list-detail class="menupages" pagename="list-detail"
-          datasink="{{ccc}}">
-      </seed-list-detail>
+      <seed-list-detail class="menupages" pagename="list-detail"></seed-list-detail>
       <seed-list-detail class="menupages" pagename="m-list-detail"></seed-list-detail>
       <seed-list-detail class="menupages" pagename="list"></seed-list-detail>
       <seed-list-detail class="menupages" pagename="m-list"></seed-list-detail>

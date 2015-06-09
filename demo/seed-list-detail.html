@@ -47,9 +47,13 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
     </style>
   <template>
       <paper-dialog id="helpDialog">
-      <h2>Header</h2>
+      <h2>Help with Cases</h2>
       <paper-dialog-scrollable>
-        Lorem ipsum...
+        <ul>
+          <li>Click on one of the cases displayed on the left</li>
+          <li>The details will show up on the right</li>
+          <li>it's that simple!</li>
+        </ul>
       </paper-dialog-scrollable>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
@@ -68,27 +72,12 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
           </paper-toolbar>
 
           <!-- List -->
-          <paper-menu class="list" on-iron-activate="_listTap">
-            <paper-item>1</paper-item>
-            <paper-item>2</paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item></paper-item>
-            <paper-item>last</paper-item>
+          <paper-menu class="list" 
+              on-iron-activate="_listTap" 
+              selected="{{selectedindex}}">
+            <template is="dom-repeat" items="{{dataitems}}">
+              <paper-item>{{item.name}}</paper-item>
+            </template>
           </paper-menu>
 
         </paper-header-panel>
@@ -103,6 +92,8 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
           <!-- Main Content -->
           <div class="content">
             <h2>This is Content</h2>
+            <p>the new item is <span>{{newt.name}}</span>, who is <span>{{newt.age}}</span> years old.</p>
+            <p>the old item is <span>{{oldt.name}}</span>, who is <span>{{oldt.age}}</span> years old.</p>
           </div>
 
         </paper-header-panel>
@@ -117,10 +108,6 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
     Polymer({
       is: 'seed-list-detail',
 
-      properties: {
-        datasink: Array
-      },
-
       _computeListWidth: function(isMobile) {
         // when in mobile screen size, make the list be 100% width to cover the whole screen
         return isMobile ? '100%' : '33%';
@@ -130,18 +117,65 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
         this.$.mainDrawerPanel.closeDrawer();
       },
 
-
-
       helpMe: function () {
         this.$.helpDialog.open();
       },
       shutDown: function () {
-        console.log("shutDown m-seed");
+        console.log("shutDown seed-list-detail");
       },
       setUp: function () {
-        console.log("setUp m-seed");
+        console.log("setUp listDetail");
         this.fire('setapptitle', {title: "Special Title for List-detail"});
+      },
+
+      properties: {
+        dataitems: {
+          type: Array,
+          value: [
+            {"name":"johnny","age":"24"},
+            {"name":"peggy","age":"21"},
+            {"name":"susan","age":"25"},
+            {"name":"george","age":"28"},
+            {"name":"Bob","age":"22"},
+            {"name":"julio","age":"25"},
+            {"name":"tomato","age":"23"},
+            {"name":"pickle","age":"28"},
+            {"name":"burger","age":"19"},
+            {"name":"Bambi","age":"4"},
+            {"name":"Bambi's Mom","age":"15"},
+            {"name":"johnny","age":"24"},
+            {"name":"peggy","age":"21"},
+            {"name":"susan","age":"25"},
+            {"name":"george","age":"28"},
+            {"name":"Bob","age":"22"},
+            {"name":"julio","age":"25"},
+            {"name":"tomato","age":"23"},
+            {"name":"pickle","age":"28"},
+            {"name":"burger","age":"19"},
+            {"name":"Bambi","age":"4"},
+            {"name":"Bambi's Mom","age":"15"}
+          ]
+        },
+        selectedindex: {
+          type: Number,
+          observer: '_selectedIndexChanged'
+        },
+        newt: Object,
+        oldt: Object
+      },
+
+      _selectedIndexChanged: function(newIndex, oldIndex) {
+        if (typeof newIndex === 'number') {
+          this.newt = this.dataitems[newIndex];
+          console.log('You selected item #' + newIndex + '.');
+        }
+        if (typeof oldIndex === 'number') {
+          this.oldt = this.dataitems[oldIndex];
+          console.log('Before, you had item #' + oldIndex + ' selected.');
       }
+    }
+
+
       
     });
     })();
