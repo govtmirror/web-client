@@ -1,12 +1,7 @@
 <!doctype html>
 <!--
 @license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+Copyright (c) 2015 Dean Wagner. All rights reserved.
 -->
 <html>
   <head>
@@ -17,6 +12,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="elements.html">
   </head>
   <body>
-    <test-app></test-app>
+    <template is="dom-bind">
+      <web-client apptitle="This is a better title">
+
+        <paper-item class="menuitems" pagename="home">Home</paper-item>
+        <paper-item class="menuitems" pagename="list-detail">Cases</paper-item>
+
+        <seed-home class="menupages" pagename="home"></seed-home>
+        <m-seed-home class="menupages" pagename="m-home"></m-seed-home>
+        <seed-list-detail class="menupages" pagename="list-detail"></seed-list-detail>
+        <seed-list-detail class="menupages" pagename="m-list-detail"></seed-list-detail>
+
+      </web-client>
+    </template>
   </body>
 </html>
