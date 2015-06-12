@@ -35,7 +35,7 @@ Example:
 
     <template>
     <iron-media-query query="(max-width: 410px)" query-matches="{{isPhone}}"></iron-media-query>
-    <paper-dialog id="loadMsg" modal>
+    <paper-dialog id="loadMsg">
       <p>{{dialogMsg}}</p>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
@@ -133,6 +133,7 @@ Example:
           } else {
             this.contentPage = this.menuSelection;
           }
+          this.$.drawerPanel.close();
         },
 
         swapContent: function () {
