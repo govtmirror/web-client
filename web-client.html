@@ -170,6 +170,10 @@ Example:
             this.dialogMsg = "";
             this.$.loadMsg.close();
           });
+          this.addEventListener('pagechange', function (e) {
+            console.log("got a pagechange event");
+            this.contentPage = e.detail.page;
+          });
           console.log("web-client, after add event listener");
           this.devicePageSelector();
         },

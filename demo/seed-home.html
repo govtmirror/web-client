@@ -19,7 +19,7 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
       </div>
     </paper-dialog>
     <h2>Hello dean. from home page</h2>
-    <p><paper-button on-tap="helpMe">help</paper-button></p>
+    <p><paper-button on-tap="godetail">go to list-detail w/ event</paper-button></p>
   </template>
 </dom-module>
 
@@ -32,6 +32,9 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
 
       helpMe: function () {
         this.$.helpDialog.open();
+      },
+      godetail: function () {
+        this.fire('pagechange', {page: 'list-detail'})
       },
       shutDown: function () {
         console.log("shutDown m-seed");
