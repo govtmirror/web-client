@@ -5,15 +5,21 @@ Copyright (c) 2015 Dean Wagner. All rights reserved.
 -->
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta 
+        charset="utf-8">
+    <meta 
+        name="viewport" 
+        content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>web-client Demo</title>
     <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="elements.html">
   </head>
   <body>
     <template is="dom-bind">
-      <web-client apptitle="This is a better title">
+      <web-client 
+          apptitle="This is a better title" 
+          fire-db="https://nmbaws.firebaseio.com"
+          >
 
         <paper-item class="menuitems" pagename="home">Home</paper-item>
         <paper-item class="menuitems" pagename="list-detail">Cases</paper-item>

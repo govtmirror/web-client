@@ -4,7 +4,9 @@ An element providing a starting point for a web client using just Polymer Web Co
 
 Each content element is expected to implement setUp() and shutDown() methods which are called upon selection for display from the web-client.  Each content element also needs to implement a helpMe() method to provide context sensitive help.
 
-Each content element is expected to manage its own data.  Certainly a great place for a firebase element. There is a "loading" dialog message in the web-client which can be called via a custom events "openMsg" and "closeMsg" from the pages.  It is possible for those events to conflict with those from other pages.  One might want to close the dialog on setUP() just in case its state is unknown?
+It provides authorization against google using the firebase DB.
+
+Each content element is expected to manage its own data using the firebase address declared in the fireDb attribute.  Certainly a great place for a firebase element. There is a "loading" dialog message in the web-client which can be called via a custom events "openMsg" and "closeMsg" from the pages.  It is possible for those events to conflict with those from other pages.  One might want to close the dialog on setUP() just in case its state is unknown?
 
 
 ## Dependencies

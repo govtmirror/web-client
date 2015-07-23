@@ -28,13 +28,9 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
     Polymer({
       is: 'seed-home',
 
-
-
+      //  page functions
       helpMe: function () {
         this.$.helpDialog.open();
-      },
-      godetail: function () {
-        this.fire('pagechange', {page: 'list-detail'})
       },
       shutDown: function () {
         console.log("shutDown m-seed");
@@ -42,9 +38,14 @@ Copyright (c) 2015 Dean Wagner (wagner@nmb.gov). All rights reserved.
       setUp: function () {
         console.log("setUp m-seed");
         this.fire('setapptitle', {title: "Special Title for Home Page"});
-      }
-
+      },
       
+
+      //  demonstration of pagechange event
+      godetail: function () {
+        this.fire('pagechange', {page: 'list-detail'})
+      }
+  
     });
     })();
   </script>
