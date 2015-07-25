@@ -70,6 +70,34 @@ Example:
         <paper-button dialog-dismiss>Cancel</paper-button>
       </div>
     </paper-dialog>
+    
+    <paper-dialog id="roleError">
+      <h2>Header</h2>
+      <paper-dialog-scrollable>
+        <p>
+          While the system has this email registered as a user, it is not registered with the role of <span>{{roletest}}</span>
+        </p>
+        <p>
+          Maybe you should contact the Arbitration Department.
+        </p>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+      </div>
+    </paper-dialog>
+    
+    <paper-dialog id="notRegistered">
+      <h2>Header</h2>
+      <paper-dialog-scrollable>
+        <p>
+          This email account is not registered with the system.
+        </p>
+        <paper-button id="registerbtn" raised>Register this email</paper-button>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+      </div>
+    </paper-dialog>
 
     <paper-drawer-panel id="drawerPanel" responsive-width="1280px">
 
@@ -171,6 +199,10 @@ Example:
           },
           roletest: String
         },
+        
+        listeners: {
+          'registerbtn.tap':'_register'
+        },
 
         ready: function () {
           this.addEventListener('setapptitle', function (e) {
@@ -242,7 +274,7 @@ Example:
           if (this.user) {
             this.loginmsg = this.user.google.displayName;
             //  fetch the user information and check role
-            var ref = new Firebase("https://nmbaws.firebaseio.com/users");
+            var ref = new Firebase(this.fireDb);
             // .bind(this) allows the use ot 'this' in the callback
             ref.orderByKey().equalTo(this.user.uid).once("value", this._userchangeCallback.bind(this)); 
           } else {
@@ -267,11 +299,13 @@ Example:
                 stuff[i].removeAttribute('disabled');
               }
             } else {
-              alert("you are registered but not a " + this.roletest);
+              // alert("you are registered but not a " + this.roletest);
+              this.$.roleError.open();
             }
             
           } else {
-            alert("you are not registered")
+            // alert("you are not registered")
+            this.$.notRegistered.open();
           }
         },
 
@@ -282,8 +316,22 @@ Example:
         },
         showMsg: function () {
           this.$.loadMsg.open();
+        },
+        
+        _register: function () {
+          
+          //  fetch the user information and check role
+          var subaddress = this.fireDb + "/users/" + this.user.uid;
+          var ref = new Firebase(subaddress);
+          var joe = this.user.google.displayName;
+          ref.set({
+              'name':joe,
+              'stat':'pending'
+            }
+          );
+          this.$.notRegistered.close();
+          alert("Your account is registered as pending");
         }
-
 
       });
     
