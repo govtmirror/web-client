@@ -63,7 +63,10 @@ Example:
         on-error="errorHandler">
     </firebase-auth>
 
-    <iron-media-query query="(max-width: 410px)" query-matches="{{isPhone}}"></iron-media-query>
+    <iron-media-query 
+        query="(max-width: 410px)" 
+        query-matches="{{isPhone}}">
+    </iron-media-query>
     <paper-dialog id="loadMsg">
       <p>{{dialogMsg}}</p>
       <div class="buttons">
@@ -92,14 +95,20 @@ Example:
         <p>
           This email account is not registered with the system.
         </p>
-        <paper-button id="registerbtn" raised>Register this email</paper-button>
+        <paper-button 
+            id="registerbtn" 
+            raised>
+          Register this email
+        </paper-button>
       </paper-dialog-scrollable>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
       </div>
     </paper-dialog>
 
-    <paper-drawer-panel id="drawerPanel" responsive-width="1280px">
+    <paper-drawer-panel 
+        id="drawerPanel" 
+        responsive-width="1280px">
 
       <div class="nav" drawer>
         <!-- Nav Content -->
@@ -110,7 +119,10 @@ Example:
         </paper-toolbar>
 
         <!-- Drawer Content -->
-        <paper-menu class="list" attr-for-selected="pagename" selected="{{menuSelection}}">
+        <paper-menu 
+            class="list" 
+            attr-for-selected="pagename" 
+            selected="{{menuSelection}}">
           <content select=".menuitems"></content>
         </paper-menu>
       </div>
@@ -120,17 +132,31 @@ Example:
 
         <!-- Main Toolbar -->
         <paper-toolbar>
-          <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+          <paper-icon-button 
+              icon="menu" 
+              paper-drawer-toggle>
+          </paper-icon-button>
 
           <!-- Application name -->
           <div class="appname">{{apptitle}}</div>
           <span>{{user.uid}}</span>
           <span class="flex"></span>
-          <button on-tap="login" hidden$="{{computeLoginHidden(statusKnown, user)}}">Login</button>
-          <button on-tap="logout" hidden$="{{computeLogoutHidden(statusKnown, user)}}">Logout</button>
+          <button 
+              on-tap="login" 
+              hidden$="{{computeLoginHidden(statusKnown, user)}}">
+            Login
+          </button>
+          <button 
+              on-tap="logout" 
+              hidden$="{{computeLogoutHidden(statusKnown, user)}}">
+            Logout
+          </button>
 
           <!-- Toolbar icons -->
-          <paper-icon-button icon="info" on-tap="getHelp"></paper-icon-button>
+          <paper-icon-button 
+              icon="info" 
+              on-tap="getHelp">
+          </paper-icon-button>
         </paper-toolbar>
 
 
