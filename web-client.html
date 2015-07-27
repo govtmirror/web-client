@@ -145,7 +145,7 @@ Example:
 
           <!-- Application name -->
           <div class="appname">{{apptitle}}</div>
-          <span>{{user.uid}}</span>
+          
           <span class="flex"></span>
           <button 
               on-tap="login" 
@@ -313,6 +313,7 @@ Example:
           this.isRole = false;
           if (this.user) {
             this.loginmsg = this.user.google.displayName;
+            console.log("XXX  your UID = " + this.uid + "   XXX")
             //  fetch the user information and check role
             var userPath = this.fireDb + "/users";
             var ref = new Firebase(userPath);
