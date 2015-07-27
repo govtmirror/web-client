@@ -223,7 +223,11 @@ Example:
           statusKnown: {
             type: Boolean
           },
-          roletest: String
+          roletest: String,
+          isRole: {
+            type: Boolean,
+            value: false
+          }
         },
         
         listeners: {
@@ -259,13 +263,16 @@ Example:
         //  content page selection functions
         devicePageSelector: function () {
           console.log("in devicePageSelector");
-          if (!this.statusKnown || !this.user) {
+          if (!this.isRole ) { // && (!this.statusKnown || !this.user)) {
             this.menuSelection = "home";
+            console.log("in devicePageSelector 2");
           }
           if (this.isPhone) {
             this.contentPage = "m-" + this.menuSelection;
+            console.log("in devicePageSelector 3");
           } else {
             this.contentPage = this.menuSelection;
+            console.log("in devicePageSelector 4");
           }
           this.$.drawerPanel.closeDrawer();
         },
@@ -297,12 +304,14 @@ Example:
           this.message = 'Error: ' + e.detail.message;
         },
         _userchange: function () {
+          this.isRole = false;
           if (this.user) {
             this.loginmsg = this.user.google.displayName;
             //  fetch the user information and check role
-            var ref = new Firebase(this.fireDb);
+            var userPath = this.fireDb + "/users";
+            var ref = new Firebase(userPath);
             // .bind(this) allows the use ot 'this' in the callback
-            ref.orderByKey().equalTo(this.user.uid).once("value", this._userchangeCallback.bind(this)); 
+            ref.orderByKey().equalTo(this.user.uid).on("value", this._userchangeCallback.bind(this)); 
           } else {
             var stuff = Polymer.dom(this).querySelectorAll('.menuitems');
             for (i = 0; i < stuff.length; i++) {
@@ -313,6 +322,7 @@ Example:
           }
         },
         _userchangeCallback: function (snapshot) {
+          console.log("xxxxxxxxxb     " + JSON.stringify(snapshot.val()) + "    xxxxxxxxx");
           if (snapshot.val()) {
             var result = snapshot.val();
             console.log("xxxxxxxxxb     " + JSON.stringify(result) + "    xxxxxxxxx");
@@ -324,6 +334,7 @@ Example:
               for (i = 0; i < stuff.length; i++) {
                 stuff[i].removeAttribute('disabled');
               }
+              this.isRole = true;
             } else {
               // alert("you are registered but not a " + this.roletest);
               this.$.roleError.open();
