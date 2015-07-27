@@ -31,6 +31,12 @@ Example:
     #drawerToolbar {
       font-family: 'Roboto', 'Noto', sans-serif;
       font-size: 16px;
+      color: var(--secondary-text-color);
+      background-color: var(--light-primary-color)
+    }
+
+    #mainToolbar {
+      background-color: var(--dark-primary-color)
     }
 
     .appname {
@@ -46,9 +52,9 @@ Example:
       background-color: var(--primary-background-color);
     }
 
-    paper-toolbar {
+    /*paper-toolbar {
       background-color: var(--dark-primary-color);
-    }
+    }*/
 
   </style>
 
@@ -131,7 +137,7 @@ Example:
 
 
         <!-- Main Toolbar -->
-        <paper-toolbar>
+        <paper-toolbar id="mainToolbar">
           <paper-icon-button 
               icon="menu" 
               paper-drawer-toggle>
