@@ -233,6 +233,10 @@ Example:
           isRole: {
             type: Boolean,
             value: false
+          },
+          uid: {
+            type: String,
+            value: ""
           }
         },
         
@@ -342,14 +346,17 @@ Example:
                 stuff[i].removeAttribute('disabled');
               }
               this.isRole = true;
+              this.uid = result[firstkey]['uid'];
             } else {
               // alert("you are registered but not a " + this.roletest);
               this.$.roleError.open();
+              this.uid = "";
             }
             
           } else {
             // alert("you are not registered")
             this.$.notRegistered.open();
+            this.uid = "";
           }
         },
 
