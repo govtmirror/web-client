@@ -328,10 +328,8 @@ Example:
           }
         },
         _userchangeCallback: function (snapshot) {
-          console.log("xxxxxxxxxb     " + JSON.stringify(snapshot.val()) + "    xxxxxxxxx");
           if (snapshot.val()) {
             var result = snapshot.val();
-            console.log("xxxxxxxxxb     " + JSON.stringify(result) + "    xxxxxxxxx");
             var mykeys = Object.keys(result);
             var firstkey = mykeys[0];
             if (result[firstkey][this.roletest]) {
