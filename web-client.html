@@ -121,7 +121,6 @@ Example:
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
           <span>User: <span>{{loginmsg}}</span></span>
-
         </paper-toolbar>
 
         <!-- Drawer Content -->
@@ -277,13 +276,8 @@ Example:
             this.menuSelection = "home";
             console.log("in devicePageSelector 2");
           }
-          if (this.isPhone) {
-            this.contentPage = "m-" + this.menuSelection;
-            console.log("in devicePageSelector 3");
-          } else {
-            this.contentPage = this.menuSelection;
-            console.log("in devicePageSelector 4");
-          }
+          this.contentPage = this.menuSelection;
+          console.log("in devicePageSelector 4");
           this.$.drawerPanel.closeDrawer();
         },
         swapContent: function () {
@@ -317,7 +311,8 @@ Example:
           this.isRole = false;
           if (this.user) {
             this.loginmsg = this.user.google.displayName;
-            console.log("XXX  your UID = " + this.uid + "   XXX")
+            console.log("XXX  your UID = " + this.user.uid + "   XXX");
+            this.uid = this.user.uid;
             //  fetch the user information and check role
             var userPath = this.fireDb + "/users";
             var ref = new Firebase(userPath);
@@ -346,11 +341,11 @@ Example:
                 stuff[i].removeAttribute('disabled');
               }
               this.isRole = true;
-              this.uid = result[firstkey]['uid'];
+             // this.uid = result[firstkey]['uid'];
             } else {
               // alert("you are registered but not a " + this.roletest);
               this.$.roleError.open();
-              this.uid = "";
+              //this.uid = "";
             }
             
           } else {
