@@ -6,17 +6,34 @@ Copyright (c) 2015 Dean Wagner. All rights reserved.
 
 <!--
 An element providing a web client that authorizes against google and allows selection 
-of content pages from the menu after login.  Using a firebase database.
+of content pages from the menu after login.  Using a firebase database.  Typically it would be used inside of a parent element that also has a selector for content, like iron-pages.  The parent receives an event with the index of the menu selection and sets the pageIndex accordingly.
 
-Example:
+Example with login:
 
-    <web-client 
-          apptitle="This is a better title" 
-          fire-db="https://<yourdatabase>.firebaseio.com"
-          roletest="arbitrator"
-          menuitems="{{somearraywithNameProperty}}"
-          validSelection="[[index of selection]]">
-    </web-client>
+      <web-client 
+          apptitle="{{apptitle}}" 
+          fire-db="{{dataUrl}}"
+          roletest="{{roletest}}"
+          menu-items="{{menuItems}}">
+      </web-client>
+
+Example w/o login:
+
+      <web-client 
+          apptitle="{{apptitle}}" 
+          menu-items="{{menuItems}}"
+          no-login>
+      </web-client>
+
+typical page selector:
+
+      <iron-pages selected="{{pageIndex_fm_parent}}">
+        <div>Page 1  <br>
+          <span>{{user.uid}}</span>
+        </div>
+        <div>Page 2</div>
+        <div>Page 3</div>
+      </iron-pages>
 
 @demo
 -->
@@ -74,10 +91,10 @@ Example:
     <firebase-auth 
         id="firebaseLogin" 
         user="{{user}}" 
-        status-known="{{statusKnown}}" 
+        status-known="{{_statusKnown}}" 
         location="{{fireDb}}" 
         provider="google"
-        on-error="errorHandler">
+        on-error="_errorHandler">
     </firebase-auth>
     
     <paper-dialog id="roleError">
@@ -125,19 +142,19 @@ Example:
       <span class="flex"></span>
       <button 
           on-tap="login" 
-          hidden$="{{computeLoginHidden(statusKnown, user)}}">
+          hidden$="{{_computeLoginHidden(_statusKnown, user)}}">
         Login
       </button>
       <button 
           on-tap="logout" 
-          hidden$="{{computeLogoutHidden(statusKnown, user)}}">
+          hidden$="{{_computeLogoutHidden(_statusKnown, user)}}">
         Logout
       </button>
 
     </paper-toolbar>
     <paper-menu 
-        selected="{{menuSelection}}"
-        hidden$="{{menuHide}}">
+        selected="{{_menuSelection}}"
+        hidden$="{{_menuHide}}">
       <template is="dom-repeat" items="{{menuItems}}">
         <paper-item class="menuitems">{{item.name}}</paper-item>
       </template>
@@ -153,98 +170,128 @@ Example:
         is: 'web-client',
 
         properties: {
-          isPhone: {
-            type: Boolean
-          },
-          // dialogMsg: {
-          //   type: String,
-          //   value: "Welcome to the Machine."
-          // },
-          menuHide: {
+
+          _menuHide: {
             type: Boolean,
             value: true
           },
+
+          /** The index number of the selected menu item, should be used 
+          * to display that menu item
+          *  
+          *@type Number 
+          */
           validSelection: {
             type: Number,
             value: 0
           },
-          menuSelection: {
+          _menuSelection: {
             type: Number,
             value: 0,
-            observer: 'devicePageSelector',
+            observer: '_devicePageSelector',
             notify: true
           },
+
+          /** An Array of objects to populate the menu.  Each must at least have
+          * a "name" property which will be used in the menu.
+          *  
+          *@type [{name:<string>},...] 
+          */
           menuItems: Array,
           
+          /** the title of the application displayed in the toolbar
+          *
+          * @type String
+          */
           apptitle: {
             type: String,
             value: "Application Title"
           },
           
-
+          /** Boolean that turns login on and off
+          *  
+          *@type Boolean 
+          */
           noLogin: {
             type: Boolean,
             value: false
           },
-          loginmsg: {
-            type: String,
-            value: "Not Logged In"
-          },
+          
+          /** Address to the firsbase database.  It must have users node with children that are the uid of the users with a boolean property with a key that matches the roletest string.
+          *  
+          *@type String 
+          */
           fireDb: String,
+
+          /** Object populated with information from the login system.  Will typically contain 
+          * at least the UID and displayName of the user.
+          *  
+          *@type Object 
+          */
           user: {
             type: Object,
             value: null,
             observer: '_userchange'
           },
-          statusKnown: {
+          _statusKnown: {
             type: Boolean
           },
+
+          /** A string that is the role of users allowed to access the client.
+          *  
+          *@type String 
+          */
           roletest: String,
-          isRole: {
+          _isRole: {
             type: Boolean,
             value: false
-          },
-          uid: {
-            type: String,
-            value: ""
           }
         },
+
+        _myprivate: String,
         
         listeners: {
           'registerbtn.tap':'_register'
         },
 
         ready: function () {
-          this.isRole = this.noLogin;
-          this.devicePageSelector();
+          this._isRole = this.noLogin;
+          this._devicePageSelector();
         },
 
         toggleToolbarMenu: function () {
-          if (this.menuHide) {
-            this.menuHide = false;
+          if (this._menuHide) {
+            this._menuHide = false;
           } else {
-            this.menuHide = true;
+            this._menuHide = true;
           }
         },
 
 
-        //  content page selection functions
-        devicePageSelector: function () {
-          console.log("in devicePageSelector, menuSelection = " + this.menuSelection);
-          if (!this.isRole ) { // && (!this.statusKnown || !this.user)) {
-            this.menuSelection = 0;
+
+
+        /**  an page-change event is fired each time the selected page changes.   
+        *
+        * @event page-change
+        * @detail {index:<Number>} 
+        */
+        _devicePageSelector: function () {
+          console.log("in _devicePageSelector, _menuSelection = " + this._menuSelection);
+          if (!this._isRole ) { // && (!this._statusKnown || !this.user)) {
+            this._menuSelection = 0;
             this.validSelection = 0;
-            console.log("in devicePageSelector 2");
+            console.log("in _devicePageSelector 2");
           } else {
-            this.validSelection = this.menuSelection;
-            this.menuHide = true;
-            console.log("in devicePageSelector 4 " + this.menuHide);
+            this.validSelection = this._menuSelection;
+            this._menuHide = true;
+            console.log("in _devicePageSelector 4 " + this._menuHide);
           }
           this.fire('page-change', {index:this.validSelection});
         },
 
 
-        // //  authentication related functions
+
+
         login: function() {
           if (!this.noLogin) {
             this.$.firebaseLogin.login();
@@ -255,13 +302,13 @@ Example:
             this.$.firebaseLogin.logout();
           }
         },
-        computeLoginHidden: function(statusKnown, user) {
-          return !statusKnown || !!user  || this.noLogin;
+        _computeLoginHidden: function(_statusKnown, user) {
+          return !_statusKnown || !!user  || this.noLogin;
         },
-        computeLogoutHidden: function(statusKnown, user) {
-          return !statusKnown || !user || this.noLogin;
+        _computeLogoutHidden: function(_statusKnown, user) {
+          return !_statusKnown || !user || this.noLogin;
         },
-        errorHandler: function(e) {
+        _errorHandler: function(e) {
           this.message = 'Error: ' + e.detail.message;
         },
         _register: function () {
@@ -279,11 +326,11 @@ Example:
           alert("Your account is registered as pending");
         },
         _userchange: function () {
-          this.isRole = false;
+          this._isRole = false;
           if (this.user) {
-            this.loginmsg = this.user.google.displayName;
+            
             console.log("XXX  your UID = " + this.user.uid + "   XXX");
-            this.uid = this.user.uid;
+            
             //  fetch the user information and check role
             var userPath = this.fireDb + "/users";
             var ref = new Firebase(userPath);
@@ -294,10 +341,16 @@ Example:
             for (i = 0; i < stuff.length; i++) {
               stuff[i].setAttribute('disabled', true);
             }
-            this.menuSelection = 0;
-            this.loginmsg = "Not Logged In";
+            this._menuSelection = 0;
+            
           }
         },
+
+        /**  a user-change event is fired each time the user uid changes.   
+        *
+        * @event user-change
+        * @detail {user:<user_Object>} 
+        */
         _userchangeCallback: function (snapshot) {
           if (snapshot.val()) {
             var result = snapshot.val();
@@ -309,26 +362,21 @@ Example:
               for (i = 0; i < stuff.length; i++) {
                 stuff[i].removeAttribute('disabled');
               }
-              this.isRole = true;
-             // this.uid = result[firstkey]['uid'];
+              this._isRole = true;
+
             } else {
               // alert("you are registered but not a " + this.roletest);
               this.$.roleError.open();
-              //this.uid = "";
+
             }
             
           } else {
             // alert("you are not registered")
             this.$.notRegistered.open();
-            this.uid = "";
+
           }
           this.fire('user-change', {user:this.user})
         }
-
-
-       
-        
-        
 
       });
     
