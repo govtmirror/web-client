@@ -13,7 +13,9 @@ Example:
     <web-client 
           apptitle="This is a better title" 
           fire-db="https://<yourdatabase>.firebaseio.com"
-          roletest="arbitrator">
+          roletest="arbitrator"
+          menuitems="{{somearraywithNameProperty}}"
+          validSelection="[[index of selection]]">
     </web-client>
 
 @demo
@@ -52,6 +54,15 @@ Example:
       background-color: var(--primary-background-color);
     }
 
+    paper-menu {
+      background-color: #dddddd;
+      width: 300px;
+      left: 0px;
+      top: 0px;
+      z-index: 10;
+    }
+    
+
     /*paper-toolbar {
       background-color: var(--dark-primary-color);
     }*/
@@ -68,17 +79,6 @@ Example:
         provider="google"
         on-error="errorHandler">
     </firebase-auth>
-
-    <iron-media-query 
-        query="(max-width: 410px)" 
-        query-matches="{{isPhone}}">
-    </iron-media-query>
-    <paper-dialog id="loadMsg">
-      <p>{{dialogMsg}}</p>
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-      </div>
-    </paper-dialog>
     
     <paper-dialog id="roleError">
       <h2>Header</h2>
@@ -112,77 +112,37 @@ Example:
       </div>
     </paper-dialog>
 
-    <paper-drawer-panel 
-        id="drawerPanel" 
-        responsive-width="1280px">
+    <!-- Main Toolbar -->
+    <paper-toolbar id="mainToolbar">
+      <paper-icon-button 
+          icon="menu"
+          on-tap="toggleToolbarMenu">
+      </paper-icon-button>
 
-      <div class="nav" drawer>
-        <!-- Nav Content -->
-        <!-- Drawer Toolbar -->
-        <paper-toolbar id="drawerToolbar">
-          <span>User: <span>{{loginmsg}}</span></span>
-        </paper-toolbar>
+      <!-- Application name -->
+      <div class="appname">{{apptitle}}</div>
+      
+      <span class="flex"></span>
+      <button 
+          on-tap="login" 
+          hidden$="{{computeLoginHidden(statusKnown, user)}}">
+        Login
+      </button>
+      <button 
+          on-tap="logout" 
+          hidden$="{{computeLogoutHidden(statusKnown, user)}}">
+        Logout
+      </button>
 
-        <!-- Drawer Content -->
-        <paper-menu 
-            class="list" 
-            attr-for-selected="pagename" 
-            selected="{{menuSelection}}">
-          <content select=".menuitems"></content>
-        </paper-menu>
-      </div>
+    </paper-toolbar>
+    <paper-menu 
+        selected="{{menuSelection}}"
+        hidden$="{{menuHide}}">
+      <template is="dom-repeat" items="{{menuItems}}">
+        <paper-item class="menuitems">{{item.name}}</paper-item>
+      </template>
+    </paper-menu>
 
-      <paper-header-panel class="main" main mode="waterfall">
-
-
-        <!-- Main Toolbar -->
-        <paper-toolbar id="mainToolbar">
-          <paper-icon-button 
-              icon="menu" 
-              paper-drawer-toggle>
-          </paper-icon-button>
-
-          <!-- Application name -->
-          <div class="appname">{{apptitle}}</div>
-          
-          <span class="flex"></span>
-          <button 
-              on-tap="login" 
-              hidden$="{{computeLoginHidden(statusKnown, user)}}">
-            Login
-          </button>
-          <button 
-              on-tap="logout" 
-              hidden$="{{computeLogoutHidden(statusKnown, user)}}">
-            Logout
-          </button>
-
-          <!-- Toolbar icons -->
-          <paper-icon-button 
-              icon="info" 
-              on-tap="getHelp">
-          </paper-icon-button>
-        </paper-toolbar>
-
-
-
-        <!-- Main Content -->
-        <div class="content">
-
-          <iron-pages 
-              attr-for-selected="pagename" 
-              selected="{{contentPage}}"
-              selected-item="{{selItem}}">
-            
-            <content select=".menupages"></content>
-
-          </iron-pages>
-
-        </div>
-
-      </paper-header-panel>
-
-    </paper-drawer-panel>
 
   </template>
 
@@ -196,25 +156,36 @@ Example:
           isPhone: {
             type: Boolean
           },
-          dialogMsg: {
-            type: String,
-            value: "Welcome to the Machine."
+          // dialogMsg: {
+          //   type: String,
+          //   value: "Welcome to the Machine."
+          // },
+          menuHide: {
+            type: Boolean,
+            value: true
+          },
+          validSelection: {
+            type: Number,
+            value: 0
           },
           menuSelection: {
-            type: String,
-            value: "home",
-            observer: 'devicePageSelector'
+            type: Number,
+            value: 0,
+            observer: 'devicePageSelector',
+            notify: true
           },
-          contentPage: {
-            type: String,
-            observer: 'swapContent'
-          },
+          menuItems: Array,
+          
           apptitle: {
             type: String,
             value: "Application Title"
           },
-          oldSelItem: Object,
-          selItem: Object,
+          
+
+          noLogin: {
+            type: Boolean,
+            value: false
+          },
           loginmsg: {
             type: String,
             value: "Not Logged In"
@@ -244,68 +215,68 @@ Example:
         },
 
         ready: function () {
-          this.addEventListener('setapptitle', function (e) {
-            console.log("setting title to " + e.detail.title);
-            this.apptitle = e.detail.title;
-          });
-          this.addEventListener('openMsg', function (e) {
-            console.log("opening the loadMsg dialog");
-            this.dialogMsg = e.detail.msg;
-            this.$.loadMsg.open();
-          });
-          this.addEventListener('closeMsg', function (e) {
-            console.log("closing the loadMsg dialog");
-            this.dialogMsg = "";
-            this.$.loadMsg.close();
-          });
-          this.addEventListener('pagechange', function (e) {
-            console.log("got a pagechange event");
-            this.contentPage = e.detail.page;
-          });
-          console.log("web-client, after add event listener");
-          // disable menu
- //         this.logout();
+          this.isRole = this.noLogin;
           this.devicePageSelector();
+        },
+
+        toggleToolbarMenu: function () {
+          if (this.menuHide) {
+            this.menuHide = false;
+          } else {
+            this.menuHide = true;
+          }
         },
 
 
         //  content page selection functions
         devicePageSelector: function () {
-          console.log("in devicePageSelector");
+          console.log("in devicePageSelector, menuSelection = " + this.menuSelection);
           if (!this.isRole ) { // && (!this.statusKnown || !this.user)) {
-            this.menuSelection = "home";
+            this.menuSelection = 0;
+            this.validSelection = 0;
             console.log("in devicePageSelector 2");
+          } else {
+            this.validSelection = this.menuSelection;
+            this.menuHide = true;
+            console.log("in devicePageSelector 4 " + this.menuHide);
           }
-          this.contentPage = this.menuSelection;
-          console.log("in devicePageSelector 4");
-          this.$.drawerPanel.closeDrawer();
-        },
-        swapContent: function () {
-          if (this.oldSelItem == undefined) {
-            console.log("no oldSelItem");
-            this.oldSelItem = this.selItem;
-          }
-          this.oldSelItem.shutDown();
-          this.selItem.setUp();
+          this.fire('page-change', {index:this.validSelection});
         },
 
-        
 
         // //  authentication related functions
         login: function() {
-          this.$.firebaseLogin.login();
+          if (!this.noLogin) {
+            this.$.firebaseLogin.login();
+          }
         },
         logout: function() {
-          this.$.firebaseLogin.logout();
+          if (!this.noLogin) {
+            this.$.firebaseLogin.logout();
+          }
         },
         computeLoginHidden: function(statusKnown, user) {
-          return !statusKnown || !!user;
+          return !statusKnown || !!user  || this.noLogin;
         },
         computeLogoutHidden: function(statusKnown, user) {
-          return !statusKnown || !user;
+          return !statusKnown || !user || this.noLogin;
         },
         errorHandler: function(e) {
           this.message = 'Error: ' + e.detail.message;
+        },
+        _register: function () {
+          
+          //  fetch the user information and check role
+          var subaddress = this.fireDb + "/users/" + this.user.uid;
+          var ref = new Firebase(subaddress);
+          var joe = this.user.google.displayName;
+          ref.set({
+              'name':joe,
+              'stat':'pending'
+            }
+          );
+          this.$.notRegistered.close();
+          alert("Your account is registered as pending");
         },
         _userchange: function () {
           this.isRole = false;
@@ -323,7 +294,7 @@ Example:
             for (i = 0; i < stuff.length; i++) {
               stuff[i].setAttribute('disabled', true);
             }
-            this.menuSelection = "home";
+            this.menuSelection = 0;
             this.loginmsg = "Not Logged In";
           }
         },
@@ -351,31 +322,13 @@ Example:
             this.$.notRegistered.open();
             this.uid = "";
           }
-        },
-
-
-        //  help and broadcast
-        getHelp: function () {
-          this.selItem.helpMe();
-        },
-        showMsg: function () {
-          this.$.loadMsg.open();
-        },
-        
-        _register: function () {
-          
-          //  fetch the user information and check role
-          var subaddress = this.fireDb + "/users/" + this.user.uid;
-          var ref = new Firebase(subaddress);
-          var joe = this.user.google.displayName;
-          ref.set({
-              'name':joe,
-              'stat':'pending'
-            }
-          );
-          this.$.notRegistered.close();
-          alert("Your account is registered as pending");
+          this.fire('user-change', {user:this.user})
         }
+
+
+       
+        
+        
 
       });
     
