@@ -90,6 +90,10 @@ typical page selector:
       font-weight: 400;
       line-height: 18px;
     }
+    #registerbtn {
+      background-color: #ddd;
+      color: black;
+    }
 
   </style>
 
@@ -111,7 +115,7 @@ typical page selector:
           While the system has this email registered as a user, it is not registered with the role of <span>{{roletest}}</span>
         </p>
         <p>
-          Maybe you should contact the Arbitration Department.
+          Maybe you should contact the Arbitration Department at arb@nmb.gov.
         </p>
       </paper-dialog-scrollable>
       <div class="buttons">
@@ -120,16 +124,26 @@ typical page selector:
     </paper-dialog>
     
     <paper-dialog id="notRegistered">
-      <h2>Header</h2>
+      <h2>Not Registered</h2>
       <paper-dialog-scrollable>
         <p>
-          This email account is not registered with the system.
+          You have opened this application in a browser that is logged in to google with a valid email address.  However the system doesn't recognize it.  If you would like to use this email to log in to the system in the future, follow the steps below;
+          <ul>
+            <li>Enter an email for coorespondence in the field below (it can be the same or different than the one you're logged in with)</li>
+            <li>Then click on the register button</li>
+            <li>Send an email to arb@nmb.gov requesting that your coorespondence email be activated</li>
+          </ul>
         </p>
+        <paper-input-container>
+          <label>Coorespond with this email: </label><br>
+          <input size="40" type="email" id="userEmail" is="iron-input">
+        </paper-input-container><br><br>
         <paper-button 
             id="registerbtn" 
             raised>
-          Register this email
-        </paper-button>
+          Register the email I'm logged in with
+        </paper-button><br>
+        
       </paper-dialog-scrollable>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
@@ -163,6 +177,7 @@ typical page selector:
     </paper-toolbar>
     <paper-menu 
         selected="{{_menuSelection}}"
+        on-tap="_hideMenu"
         hidden$="{{_menuHide}}">
       <template is="dom-repeat" items="{{menuItems}}">
         <paper-item class="menuitems">{{item.name}}</paper-item>
@@ -300,7 +315,9 @@ typical page selector:
         },
 
 
-
+        _hideMenu: function () {
+          this._menuHide = true;
+        },
 
         login: function() {
           if (!this.noLogin) {
@@ -327,9 +344,11 @@ typical page selector:
           var subaddress = this.fireDb + "/users/" + this.user.uid;
           var ref = new Firebase(subaddress);
           var joe = this.user.google.displayName;
+          var cooremail = this.$.userEmail.value;
           ref.set({
               'name':joe,
-              'stat':'pending'
+              'stat':'pending',
+              'coorespondEmail': cooremail
             }
           );
           this.$.notRegistered.close();
