@@ -2,18 +2,18 @@
 @license
 Copyright (c) 2015 Dean Wagner. All rights reserved.
 -->
-<!-- <link rel="import" href="../polymer/polymer.html"> -->
-<!-- <script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
-<link rel="import" href="../bower_components/firebase-element/firebase-auth.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
- -->
+<link rel="import" href="../polymer/polymer.html">
+<script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
+<link rel="import" href="../firebase-element/firebase-auth.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
 <!--
 An element providing a web client that authorizes against google and allows selection 
 of content pages from the menu after login.  Using a firebase database.  Typically it would be used inside of a parent element that also has a selector for content, like iron-pages.  The parent receives an event with the index of the menu selection and sets the pageIndex accordingly.

@@ -11,15 +11,40 @@ Copyright (c) 2015 Dean Wagner. All rights reserved.
         name="viewport" 
         content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>web-client Demo</title>
-    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="elements.html">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../web-client.html">
+
   </head>
   <body>
-    <demo-app></demo-app>
-    <br>
-    <br>
-    <br>
-    <br>
-    <demo2-app></demo2-app>
+    
+      <web-client 
+          id="demo1"
+          apptitle="" 
+          menu-items=""
+          no-login>
+      </web-client>
+      <br><br><br><br><br><br><br>
+      <web-client 
+          id="demo2"
+          apptitle="{{apptitle}}" 
+          fire-db="{{dataUrl}}"
+          roletest="{{roletest}}"
+          menu-items="{{menuItems}}">
+      </web-client>
+
+      
+  
   </body>
+
+  <script>
+    var t = document.querySelector('#demo1');
+    t.apptitle = "App Title w/o Login";
+    t.menuItems = [{name: "item A"}, {name: "item B"}, {name: "item C"}];
+    var tt = document.querySelector('#demo2');
+    tt.apptitle = "App Title with Login";
+    tt.menuItems = [{name: "item 1"}, {name: "item 2"}, {name: "item 3"}];
+    tt.fireDb = "https://nmbaws.firebaseio.com";
+    tt.roletest = "reviewer"
+  </script>
+
 </html>
