@@ -91,8 +91,17 @@ typical page selector:
       line-height: 18px;
     }
     #registerbtn {
-      background-color: #ddd;
+      background-color: #009688;
       color: black;
+      margin-right: 50px;
+    }
+    #cancelbtn {
+      background-color: #009688;
+      color: black;
+      margin-left: 50px;
+    }
+    .register{
+      text-align: center;
     }
 
   </style>
@@ -119,35 +128,44 @@ typical page selector:
         </p>
       </paper-dialog-scrollable>
       <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-dismiss>OK</paper-button>
       </div>
     </paper-dialog>
     
     <paper-dialog id="notRegistered">
-      <h2>Not Registered</h2>
+      <h2>Arbitrator Work Space Registration</h2>
       <paper-dialog-scrollable>
         <p>
-          You have opened this application in a browser that is logged in to google with a valid email address.  However the system doesn't recognize it.  If you would like to use this email to log in to the system in the future, follow the steps below;
-          <ul>
-            <li>Enter an email for coorespondence in the field below (it can be the same or different than the one you're logged in with)</li>
-            <li>Then click on the register button</li>
-            <li>Send an email to arb@nmb.gov requesting that your coorespondence email be activated</li>
-          </ul>
+          You have opened this application in a browser that is logged into Google with a valid account.   However the system doesn't recognize your account as being registered in our system.</p>
+        <p>
+          If you would like to register this account, follow the steps below:</p>
+          <ol>
+            <li>Enter an email for correspondence in the field below (it can be the same or different than the Google account you’ve logged in with.)  The AWS uses the correspondence email address for communication with an Arbitrator (eg confirmation emails, approval emails, etc.).</li>
+            <paper-input-container><br>
+              <!--<label>Coorespond with this email: </label><br> -->
+              <input size="50" type="email" id="userEmail" is="iron-input">
+            </paper-input-container><br><br>
+            <li>Click on the REGISTER button.</li>
+            <li>Send an email to arb@nmb.gov requesting that your account be activated.</li>
+          </ol>
         </p>
-        <paper-input-container>
-          <label>Coorespond with this email: </label><br>
-          <input size="40" type="email" id="userEmail" is="iron-input">
-        </paper-input-container><br><br>
-        <paper-button 
-            id="registerbtn" 
-            raised>
-          Register the email I'm logged in with
-        </paper-button><br>
+        
+        <div class= "register">
+          <paper-button 
+              id="registerbtn" 
+              raised>
+            REGISTER
+          </paper-button>
+
+          <paper-button dialog-dismiss 
+              id="cancelbtn" 
+              raised>
+            CANCEL
+          </paper-button><br>
+        </div>        
         
       </paper-dialog-scrollable>
-      <div class="buttons">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-      </div>
+     
     </paper-dialog>
 
     <!-- Main Toolbar -->
