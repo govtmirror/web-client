@@ -287,6 +287,15 @@ typical page selector:
           _isRole: {
             type: Boolean,
             value: false
+          },
+
+          /** A string with the google display name or 'no user'.
+          *  
+          *@type String 
+          */
+          displayName: {
+            type: String,
+            value: "no user"
           }
         },
 
@@ -375,8 +384,9 @@ typical page selector:
         _userchange: function () {
           this._isRole = false;
           if (this.user) {
-            
-            console.log("XXX  your UID = " + this.user.uid + "   XXX");
+            this.displayName = this.user.google.displayName;
+
+            console.log("XXX  your UID = " + this.user.uid + ", " + this.displayName + "   XXX");
             
             //  fetch the user information and check role
             var userPath = this.fireDb + "/users";
