@@ -13,6 +13,7 @@ Copyright (c) 2015 Dean Wagner. All rights reserved.
     <title>web-client Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../web-client.html">
+    <link rel="import" href="../aws-home.html">
 
   </head>
   <body>
@@ -31,7 +32,8 @@ Copyright (c) 2015 Dean Wagner. All rights reserved.
           roletest="{{roletest}}"
           menu-items="{{menuItems}}">
       </web-client>
-
+      
+      <aws-home></aws-home>
       
   
   </body>
@@ -43,7 +45,7 @@ Copyright (c) 2015 Dean Wagner. All rights reserved.
     var tt = document.querySelector('#demo2');
     tt.apptitle = "App Title with Login";
     tt.menuItems = [{name: "item 1"}, {name: "item 2"}, {name: "item 3"}];
-    tt.fireDb = "https://nmbaws.firebaseio.com";
+    tt.fireDb = "https://nmbtestdata.firebaseio.com/";
     tt.roletest = "reviewer"
   </script>
 

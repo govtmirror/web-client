@@ -10,9 +10,15 @@ Copyright (c) 2015 Dean Wagner. All rights reserved.
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-input/paper-input-behavior.html">
+<link rel="import" href="../paper-input/paper-input-container.html">
+<link rel="import" href="../paper-input/paper-input-error.html">
+<link rel="import" href="../iron-input/iron-input.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../paper-menu/paper-menu.html">
 <link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../iron-form/iron-form.html">
 
 <!--
 An element providing a web client that authorizes against google and allows selection 
@@ -103,6 +109,10 @@ typical page selector:
     .register{
       text-align: center;
     }
+    label {
+      color: red !important;
+      font-weight: bold !important;
+    }
 
   </style>
 
@@ -141,10 +151,15 @@ typical page selector:
           If you would like to register this account, follow the steps below:</p>
           <ol>
             <li>Enter an email for correspondence in the field below (it can be the same or different than the Google account you’ve logged in with.)  The AWS uses the correspondence email address for communication with an Arbitrator (eg confirmation emails, approval emails, etc.).</li>
-            <paper-input-container><br>
-              <!--<label>Coorespond with this email: </label><br> -->
+            <form is="iron-form" id="emailForm">
+              <p>Correspondance email address  </p>
+              <input name="email" id="userEmail" size="50" placeholder="You must enter your correspondance email address here!" required><br><br>
+              <input type="submit" value="Submit">
+            </form><br><br>
+            <!--paper-input-container><br>
+              <label>Correspond with this email: </label><br>
               <input size="50" type="email" id="userEmail" is="iron-input">
-            </paper-input-container><br><br>
+            </paper-input-container><br><br-->
             <li>Click on the REGISTER button.</li>
             <li>Send an email to arb@nmb.gov requesting that your account be activated.</li>
           </ol>
@@ -210,6 +225,7 @@ typical page selector:
 
       Polymer({
         is: 'web-client',
+
 
         properties: {
 
@@ -435,7 +451,8 @@ typical page selector:
           this.fire('user-change', {user:this.user})
         }
 
+        
+
       });
     
-
 </script>
